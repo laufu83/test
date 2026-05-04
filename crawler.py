@@ -29,7 +29,7 @@ def get_db_connection():
 
 def get_total_pages():
     try:
-        url = "https://api.xinlangapi.com/xinlangapi.php/provide/vod/from/xlm3u8/?pg=1"
+        url = "https://api.xinlangapi.com/xinlangapi.php/provide/vod/from/xlm3u8/?h=24"
         resp = requests.get(url, timeout=10)
         data = resp.json()
         total_page = int(data.get("pagecount", 1))
