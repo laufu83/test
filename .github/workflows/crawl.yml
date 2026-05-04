@@ -1,9 +1,8 @@
 name: 自动爬视频入库Supabase
-
 on:
   schedule:
-    - cron: "0 3 * * *"  # 每天 UTC 3点 = 北京时间 11点
-  workflow_dispatch:     # 允许你手动点一下运行
+    - cron: "0 3 * * *"
+  workflow_dispatch:
 
 jobs:
   crawl:
@@ -25,4 +24,9 @@ jobs:
       - name: 运行爬虫
         run: python crawler.py
         env:
-          TZ: Asia/Shanghai
+          TZ: Asia/Shanghai         
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_PORT: ${{ secrets.DB_PORT }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASS: ${{ secrets.DB_PASS }}
