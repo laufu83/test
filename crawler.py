@@ -4,11 +4,11 @@ import psycopg2
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 # ===================== 你只需要填这里 =====================
-DB_HOST = "db.rufhslpktjrftrdrpxxi.supabase.co"
-DB_PORT = "5432"
-DB_NAME = "postgres"
-DB_USER = "postgres"
-DB_PASS = "PjgejLPVmmrzZlfY"
+DB_HOST = os.getenv("DB_HOST")
+DB_PORT = os.getenv("DB_PORT", "5432")
+DB_NAME = os.getenv("DB_NAME", "postgres")
+DB_USER = os.getenv("DB_USER")
+DB_PASS = os.getenv("DB_PASS")
 TABLE_NAME = "movies.vod_data"
 MAX_THREAD = 5
 # ==========================================================
