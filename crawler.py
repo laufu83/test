@@ -16,7 +16,7 @@ DB_PASS = os.getenv("DB_PASS")
 TABLE_NAME = "movies.vod_dytt"
 MAX_THREAD = 5
 # ==========================================================
-API_BASE_URL = "https://api.xinlangapi.com/xinlangapi.php/provide/vod/from/xlm3u8/"
+API_BASE_URL = "https://dyttzy5.tv/api.php/provide/vod/from/dyttm3u8/at/json/"
 # ====================================================
 # 过滤字段
 FILTER_FIELDS = {
