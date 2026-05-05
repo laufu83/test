@@ -7,5 +7,11 @@
         { "key": "Access-Control-Allow-Methods", "value": "GET,POST" }
       ]
     }
+  ],
+  "builds": [
+    { "src": "api/**/*.js", "use": "@vercel/node" }
+  ],
+  "routes": [
+    { "src": "/api/(.*)", "dest": "/api/$1" }
   ]
 }
