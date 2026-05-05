@@ -1,4 +1,4 @@
-name: 自动爬视频入库Supabase
+name: 自动爬视频入库mysql
 on:
   schedule:
     - cron: "0 */4 * * *"
