@@ -22,7 +22,7 @@ jobs:
           pip install requests psycopg2-binary
 
       - name: 运行爬虫
-        run: python crawler.py
+        run: python crawler_mysql.py
         env:
           TZ: Asia/Shanghai         
           DB_HOST: ${{ secrets.MYSQL_DB_PORT }}
