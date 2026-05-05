@@ -28,7 +28,7 @@ jobs:
         run: python crawler_mysql.py
         env:
           TZ: Asia/Shanghai         
-          DB_HOST: ${{ secrets.MYSQL_DB_PORT }}
+          DB_HOST: ${{ secrets.MYSQL_DB_HOST }}
           DB_PORT: 3311
           DB_NAME: ${{ secrets.MYSQL_DB_NAME }}
           DB_USER: ${{ secrets.MYSQL_DB_USER }}
