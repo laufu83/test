@@ -12,7 +12,7 @@ DB_HOST = os.getenv("MYSQL_DB_HOST")
 DB_NAME = os.getenv("MYSQL_DB_NAME")
 DB_USER = os.getenv("MYSQL_DB_USER")
 DB_PASS = os.getenv("MYSQL_DB_PASS")
-DB_PORT = os.getenv("MYSQL_DB_PORT")              # MySQL 端口（默认3306）
+DB_PORT = int(os.getenv("MYSQL_DB_PORT"))        # MySQL 端口（默认3306）
 
 TABLE_NAME = "vod_dytt"          # 表名（你之前建的表）
 MAX_THREAD = 20              # 并发线程数
