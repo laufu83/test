@@ -73,7 +73,7 @@ def get_mysql_conn():
     with db_lock:
         if conn is None or not conn.open:
             conn = pymysql.connect(
-                host=DB_HOST, port=DB_PORT, user=DB_USER, password=DB_PASS,
+                host=DB_HOST, port=DB_PORT, user=DB_USER, password=DB_PASS,ssl_verify_identity=True,
                 database=DB_NAME, charset='utf8mb4', connect_timeout=10
             )
     return conn
