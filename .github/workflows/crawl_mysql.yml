@@ -32,4 +32,4 @@ jobs:
           MYSQL_DB_PORT: ${{ secrets.TIDB_PORT }}
           MYSQL_DB_NAME: ${{ secrets.TIDB_NAME }}
           MYSQL_DB_USER: ${{ secrets.TIDB_USER }}
-          MYSQL_DB_PASS: ${{ secrets.TI_DB_PASS }}
+          MYSQL_DB_PASS: ${{ secrets.TIDB_PASS }}
