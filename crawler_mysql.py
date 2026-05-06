@@ -177,7 +177,7 @@ def run():
 
     try:
         with ThreadPoolExecutor(MAX_THREAD) as executor:
-            executor.map(task, range(2200, total_pages + 1))
+            executor.map(task, range(1, total_pages + 1))
     finally:
         flush_cache()
         global conn
