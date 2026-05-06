@@ -13,19 +13,19 @@ DB_PORT = os.getenv("DB_PORT", "5432")
 DB_NAME = os.getenv("DB_NAME", "postgres")
 DB_USER = os.getenv("DB_USER")
 DB_PASS = os.getenv("DB_PASS")
-TABLE_NAME = "movies.vod_dytt"
+TABLE_NAME = "movies.vod"
 MAX_THREAD = 5
 # ==========================================================
 API_BASE_URL = "https://dyttzy5.tv/api.php/provide/vod/from/dyttm3u8/at/json/"
 # ====================================================
-# 过滤字段
-FILTER_FIELDS = {
-    "vod_pwd", "vod_pwd_url", "vod_pwd_play", "vod_pwd_play_url",
-    "vod_pwd_down", "vod_pwd_down_url",
-    "vod_down_from", "vod_down_server", "vod_down_note", "vod_down_url",
-    "vod_points", "vod_points_play", "vod_points_down",
-    "vod_jumpurl", "vod_tpl", "vod_tpl_play", "vod_tpl_down"
-}
+KEEP_FIELDS = [
+    "vod_id", "type_id", "type_name", "type_id_1",
+    "vod_name", "vod_sub", "vod_en", "vod_letter",
+    "vod_class", "vod_pic", "vod_actor", "vod_director",
+    "vod_area", "vod_lang", "vod_year", "vod_douban_id",
+    "vod_douban_score", "vod_content", "vod_remarks",
+    "vod_score", "vod_play_url", "vod_status", "vod_time"
+]
 
 # 进度
 progress_lock = Lock()
@@ -50,59 +50,17 @@ def clean_field(val):
         return ""
     return val.split("$$$")[-1] if "$$$" in val else val
 
+# 清洗单条视频数据
+# ===================== 【核心】只保留需要的字段 =====================
 def clean_video_data(v):
-    for f in FILTER_FIELDS:
-        if f in v:
-            del v[f]
-    v["vod_play_from"] = clean_field(v.get("vod_play_from", ""))
-    v["vod_play_server"] = clean_field(v.get("vod_play_server", ""))
-    v["vod_play_note"] = clean_field(v.get("vod_play_note", ""))
-    v["vod_play_url"] = clean_field(v.get("vod_play_url", ""))
+    cleaned = {}
+    for k in KEEP_FIELDS:
+        value = v.get(k)
+        if k == "vod_play_url":
+            value = clean_field(value)
+        cleaned[k] = value
+    return cleaned
 
-    # ===================== 🔥 强制超长截取（解决报错） =====================
-    max_lengths = {
-        "vod_name": 190,
-        "vod_sub": 480,
-        "vod_en": 90,
-        "vod_color": 8,
-        "vod_tag": 240,
-        "vod_class": 90,
-        "vod_pic": 240,
-        "vod_pic_thumb": 240,
-        "vod_pic_slide": 240,
-        "vod_pic_screenshot": 240,
-        "vod_director": 280,
-        "vod_writer": 90,
-        "vod_behind": 240,
-        "vod_remarks": 40,
-        "vod_pubdate": 40,
-        "vod_serial": 40,
-        "vod_tv": 40,
-        "vod_weekday": 18,
-        "vod_area": 40,
-        "vod_lang": 40,
-        "vod_year": 18,
-        "vod_version": 40,
-        "vod_state": 40,
-        "vod_author": 40,
-        "vod_duration": 28,
-        "vod_score": 8,
-        "vod_douban_score": 8,
-        "vod_reurl": 240,
-        "vod_rel_vod": 240,
-        "vod_rel_art": 240,
-        "vod_play_from": 90,
-        "vod_play_server": 90,
-        "vod_play_note": 90,
-        "vod_plot_name": 90,
-        "type_name": 40
-    }
-
-    for key, max_len in max_lengths.items():
-        if key in v and v[key] and isinstance(v[key], str):
-            v[key] = v[key][:max_len]
-
-    return v
 
 # ===================== 🔥 关键修复：每次都用新连接 =====================
 def get_new_db_conn():
@@ -156,7 +114,7 @@ def save_single_page(videos):
 # ===================== 爬取逻辑 =====================
 def get_total_pages():
     try:
-        resp = get_session().get(f"{API_BASE_URL}?h=24", timeout=15)
+        resp = get_session().get(f"{API_BASE_URL}?pg=1&h=24", timeout=15)
         return int(resp.json().get("pagecount", 1))
     except:
         return 1
