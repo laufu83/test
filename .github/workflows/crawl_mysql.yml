@@ -28,8 +28,8 @@ jobs:
         run: python crawler_mysql.py
         env:
           TZ: Asia/Shanghai         
-          MYSQL_DB_HOST: ${{ secrets.MYSQL_DB_HOST }}
-          MYSQL_DB_PORT: 3311
-          MYSQL_DB_NAME: ${{ secrets.MYSQL_DB_NAME }}
-          MYSQL_DB_USER: ${{ secrets.MYSQL_DB_USER }}
-          MYSQL_DB_PASS: ${{ secrets.MYSQL_DB_PASS }}
+          MYSQL_DB_HOST: ${{ secrets.TIDB_HOST }}
+          MYSQL_DB_PORT: ${{ secrets.TIDB_PORT }}
+          MYSQL_DB_NAME: ${{ secrets.TIDB_NAME }}
+          MYSQL_DB_USER: ${{ secrets.TIDB_USER }}
+          MYSQL_DB_PASS: ${{ secrets.TI_DB_PASS }}
