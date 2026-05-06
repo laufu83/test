@@ -138,7 +138,7 @@ def flush_cache():
 # ===================== 爬取 =====================
 def get_total_pages():
     try:
-        return int(get_session().get(f"{API_BASE_URL}?pg=1", timeout=15).json().get("pagecount", 1))
+        return int(get_session().get(f"{API_BASE_URL}?pg=1&h=24", timeout=15).json().get("pagecount", 1))
     except:
         return 1
 
