@@ -1,7 +1,7 @@
 name: 自动爬ffzy视频入库tidb
 on:
   schedule:
-    - cron: "0 1/8 * * *"
+    - cron: "0 5/8 * * *"
   workflow_dispatch:
 # 🔥 加这一行就消除警告
 env:
