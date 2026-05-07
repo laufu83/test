@@ -1,4 +1,4 @@
-name: 自动爬视频入库mysql
+name: 自动爬dytt视频入库mysql
 on:
   schedule:
     - cron: "0 1/8 * * *"
