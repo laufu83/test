@@ -14,12 +14,11 @@ DB_USER = os.getenv("MYSQL_DB_USER")
 DB_PASS = os.getenv("MYSQL_DB_PASS")
 DB_PORT = int(os.getenv("MYSQL_DB_PORT"))        # MySQL 端口（默认3306）
 
-TABLE_NAME = "vod_dytt"          # 表名（你之前建的表）
-MAX_THREAD = 20              # 并发线程数
+TABLE_NAME =  os.getenv("BASE_TABLE")          # 表名（你之前建的表）
+MAX_THREAD = 20       # 并发线程数
 BATCH_SIZE = 100  # 每100条提交一次（大幅降请求）
 
-# API 基础地址（常量，以后只改这里）https://dyttzy5.tv/api.php/provide/vod/at/json/
-API_BASE_URL ="https://dyttzy5.tv/api.php/provide/vod/from/dyttm3u8/at/json/"
+API_BASE_URL = os.getenv("BASE_URL")
 
 KEEP_FIELDS = [
     "vod_id", "type_id", "type_name", "type_id_1",
@@ -49,6 +48,12 @@ def get_session():
     adapter = HTTPAdapter(max_retries=retry)
     session.mount("http://", adapter)
     session.mount("https://", adapter)
+    session.headers.update({
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        "Accept": "application/json, text/plain, */*",
+        "Accept-Language": "zh-CN,zh;q=0.9",
+        "Connection": "keep-alive"
+    })
     return session
 
 # ===================== 数据清洗 =====================
