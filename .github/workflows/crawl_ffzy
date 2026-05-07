@@ -1,0 +1,37 @@
+name: 自动爬视频入库tidb
+on:
+  schedule:
+    - cron: "0 1/8 * * *"
+  workflow_dispatch:
+# 🔥 加这一行就消除警告
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+  
+jobs:
+  crawl:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 拉取代码
+        uses: actions/checkout@v4
+
+      - name: 设置Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 安装依赖     
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests pymysql cryptography
+
+      - name: 运行爬虫
+        run: python crawler_mysql.py
+        env:
+          TZ: Asia/Shanghai         
+          MYSQL_DB_HOST: ${{ secrets.TIDB_HOST }}
+          MYSQL_DB_PORT: ${{ secrets.TIDB_PORT }}
+          MYSQL_DB_NAME: ${{ secrets.TIDB_NAME }}
+          MYSQL_DB_USER: ${{ secrets.TIDB_USER }}
+          MYSQL_DB_PASS: ${{ secrets.TIDB_PASS }}
+          BASE_URL: "http://ffzy5.tv/api.php/provide/vod/from/ffm3u8/at/json"
+          BASE_TABLE: "vod_ffzy"
