@@ -1,4 +1,4 @@
-name: 自动爬视频入库tidb
+name: 自动爬ffzy视频入库tidb
 on:
   schedule:
     - cron: "0 1/8 * * *"
