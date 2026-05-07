@@ -33,3 +33,5 @@ jobs:
           MYSQL_DB_NAME: ${{ secrets.TIDB_NAME }}
           MYSQL_DB_USER: ${{ secrets.TIDB_USER }}
           MYSQL_DB_PASS: ${{ secrets.TIDB_PASS }}
+          BASE_URL: "https://dyttzy5.tv/api.php/provide/vod/from/dyttm3u8/at/json/"
+          BASE_TABLE: "vod_dytt"
