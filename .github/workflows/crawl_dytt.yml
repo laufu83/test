@@ -11,6 +11,10 @@ jobs:
   crawl:
     runs-on: ubuntu-latest
     steps:
+      - name: 访问 Supabase API 保活
+        run: |
+          curl -I "https://qdayueqodhquefczraii.supabase.co/rest/v1/?apikey=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFkYXl1ZXFvZGhxdWVmY3pyYWlpIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3ODkyNzI4NiwiZXhwIjoyMDk0NTAzMjg2fQ.b8SJRCXnSaIrd1wDWtAqXvGKCsZDPPwoVYGHYL3diPE"
+          echo "Supabase 已成功访问，项目保持活跃！"
       - name: 拉取代码
         uses: actions/checkout@v4
 
