@@ -1,0 +1,34 @@
+name: Aiven Valkey&MySQL KeepAlive
+# 触发：定时每6小时 + 手动可一键运行
+on:
+  workflow_dispatch: # 手动点Run workflow测试
+  schedule:
+    - cron: '0 */6 * * *' # UTC每6小时整点执行，一天4次保活，完美防休眠
+
+jobs:
+  ping_keepalive:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install redis-cli
+        run: sudo apt update && sudo apt install redis-tools -y
+
+      - name: Valkey SSL PING保活(rediss加密)
+        env:
+          HOST: ${{ secrets.VALKEY_HOST }}
+          PORT: ${{ secrets.VALKEY_PORT }}
+          PWD: ${{ secrets.VALKEY_PWD }}
+        run: |
+          echo "===== Valkey保活开始 ====="
+          redis-cli -u rediss://avnadmin:${PWD}@${HOST}:${PORT} PING
+          echo "===== Valkey执行结束 ====="
+
+      # 【后续开通Aiven MySQL再启用】去掉下面注释#即可
+      #- name: MySQL保活 SELECT 1
+      #  env:
+      #    MYH: ${{ secrets.MYSQL_HOST }}
+      #    MYP: ${{ secrets.MYSQL_PORT }}
+      #    MYU: avnadmin
+      #    MYPWD: ${{ secrets.MYSQL_PWD }}
+      #  run: |
+      #    echo "===== MySQL保活 ====="
+      #    mysql -h${MYH} -P${MYP} -u${MYU} -p${MYPWD} --ssl-mode=REQUIRED -e "SELECT 1;"
