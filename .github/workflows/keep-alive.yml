@@ -19,7 +19,7 @@ jobs:
           PWD: ${{ secrets.VALKEY_PWD }}
         run: |
           echo "===== Valkey保活开始 ====="          
-          redis-cli -h $HOST -p $PORT --tls -a "$PWD" PING
+          redis-cli rediss://default:${PWD}@valkey-fred-fred.h.aivencloud.com:15350 PING
           echo "===== Valkey执行结束 ====="
 
       # 【后续开通Aiven MySQL再启用】去掉下面注释#即可
