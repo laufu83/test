@@ -3,7 +3,7 @@ name: Aiven Valkey&MySQL KeepAlive
 on:
   workflow_dispatch: # 手动点Run workflow测试
   schedule:
-    - cron: '0 */1 * * *' # UTC每6小时整点执行，一天4次保活，完美防休眠
+    - cron: '0 */6 * * *' # UTC每6小时整点执行，一天4次保活，完美防休眠
 
 jobs:
   ping_keepalive:
