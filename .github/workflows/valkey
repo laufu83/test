@@ -3,7 +3,7 @@ name: Aiven Valkey&MySQL KeepAlive
 on:
   workflow_dispatch: # 手动点Run workflow测试
   schedule:
-    - cron: '0 */6 * * *' # UTC每6小时整点执行，一天4次保活，完美防休眠
+    - cron: '0 */1 * * *' # UTC每6小时整点执行，一天4次保活，完美防休眠
 
 jobs:
   ping_keepalive:
@@ -14,12 +14,12 @@ jobs:
 
       - name: Valkey SSL PING保活(rediss加密)
         env:
-          HOST: ${{ secrets.VALKEY_HOST }}
-          PORT: ${{ secrets.VALKEY_PORT }}
+          HOST: ${{ vars.VALKEY_HOST }}
+          PORT: ${{ vars.VALKEY_PORT }}
           PWD: ${{ secrets.VALKEY_PWD }}
         run: |
           echo "===== Valkey保活开始 ====="
-          redis-cli -u rediss://avnadmin:${PWD}@${HOST}:${PORT} PING
+          redis-cli -u rediss://default:${PWD}@${HOST}:${PORT} PING
           echo "===== Valkey执行结束 ====="
 
       # 【后续开通Aiven MySQL再启用】去掉下面注释#即可
