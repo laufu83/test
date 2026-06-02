@@ -16,12 +16,15 @@ jobs:
         env:
           HOST: ${{ vars.VALKEY_HOST }}
           PORT: ${{ vars.VALKEY_PORT }}
-          PWD: ${{ secrets.VALKEY_PWD }}
+          RAW_PWD: ${{ secrets.VALKEY_PWD }}
         run: |
           echo "======== 调试信息 ========"
           echo "主机：$HOST"
           echo "端口：$PORT"
-          echo "密码长度：${#PWD}"  # 不泄露密码，只看长度对不对
+          echo "原始密码长度：${#RAW_PWD}"
+          # 只保留可见有效字符，删除所有隐形/换行/空格/零宽字符
+          PWD=$(echo -n "$RAW_PWD" | tr -dc '[:graph:]')
+          echo "过滤后密码长度：${#PWD}"
           echo "==========================" 
           echo "===== Valkey保活开始 ====="
           redis-cli -h "$HOST" -p "$PORT" --tls --user default -a "$PWD" PING
