@@ -17,6 +17,6 @@ jobs:
           # 👇 把这里改成你的 Aiven Valkey 信息
           VALKEY_HOST: "valkey-fred-fred.h.aivencloud.com"
           VALKEY_PORT: 15350
-          VALKEY_PASSWORD: "你的密码"
+          VALKEY_PASSWORD:  ${{ secrets.VALKEY_REDIS_PWD }}
         run: |
           redis-cli -h $VALKEY_HOST -p $VALKEY_PORT -a $VALKEY_PASSWORD PING
