@@ -2,7 +2,7 @@ name: Valkey 自动保活
 
 on:
   schedule:
-    - cron: '0 */6 * * *'  # 每 6 小时执行一次（足够保活）
+    - cron: '8 */6 * * *'  # 每 6 小时执行一次（足够保活）
   workflow_dispatch:      # 允许手动点一下执行测试
 
 jobs:
