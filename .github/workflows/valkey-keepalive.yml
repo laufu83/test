@@ -19,4 +19,4 @@ jobs:
           VALKEY_PORT: 15350
           VALKEY_PASSWORD:  ${{ secrets.VALKEY_REDIS_PWD }}
         run: |
-          redis-cli -h $VALKEY_HOST -p $VALKEY_PORT -a $VALKEY_PASSWORD PING
+          redis-cli -h $VALKEY_HOST -p $VALKEY_PORT --tls -a $VALKEY_PASSWORD PING
