@@ -28,10 +28,10 @@ jobs:
         run: python crawler_mysql.py
         env:
           TZ: Asia/Shanghai         
-          MYSQL_DB_HOST: ${{ secrets.TIDB_HOST }}
-          MYSQL_DB_PORT: ${{ secrets.TIDB_PORT }}
-          MYSQL_DB_NAME: ${{ secrets.TIDB_NAME }}
-          MYSQL_DB_USER: ${{ secrets.TIDB_USER }}
-          MYSQL_DB_PASS: ${{ secrets.TIDB_PASS }}
+          MYSQL_DB_HOST: ${{ vars.TIDB_HOST }}
+          MYSQL_DB_PORT: ${{ vars.TIDB_PORT }}
+          MYSQL_DB_NAME: ${{ vars.TIDB_NAME }}
+          MYSQL_DB_USER: ${{ vars.TIDB_USER }}
+          MYSQL_DB_PASS: ${{ secrets.TIDB_PWD }}
           BASE_URL: "http://ffzy5.tv/api.php/provide/vod/from/ffm3u8/at/json"
           BASE_TABLE: "vod_ffzy"
