@@ -32,6 +32,6 @@ jobs:
           MYSQL_DB_PORT: ${{ vars.TIDB_PORT }}
           MYSQL_DB_NAME: ${{ vars.TIDB_NAME }}
           MYSQL_DB_USER: ${{ vars.TIDB_USER }}
-          MYSQL_DB_PASS: ${{ secrets.TIDB_PWD }}
+          MYSQL_DB_PASS: ${{ secrets.TIDB_PASS }}
           BASE_URL: "http://ffzy5.tv/api.php/provide/vod/from/ffm3u8/at/json"
           BASE_TABLE: "vod_ffzy"
