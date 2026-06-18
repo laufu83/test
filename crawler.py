@@ -6,7 +6,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 from threading import Lock
-
+from pypinyin import lazy_pinyin, Style
 # ===================== 你只需要填这里 =====================
 DB_HOST = os.getenv("DB_HOST")
 DB_PORT = os.getenv("DB_PORT", "5432")
@@ -24,7 +24,8 @@ KEEP_FIELDS = [
     "vod_class", "vod_pic", "vod_actor", "vod_director",
     "vod_area", "vod_lang", "vod_year", "vod_douban_id",
     "vod_douban_score", "vod_content", "vod_remarks",
-    "vod_score", "vod_play_url", "vod_status", "vod_time"
+    "vod_score", "vod_play_url", "vod_status", "vod_time",
+     "vod_name_letter"
 ]
 
 # 进度
@@ -55,10 +56,15 @@ def clean_field(val):
 def clean_video_data(v):
     cleaned = {}
     for k in KEEP_FIELDS:
-        value = v.get(k)
-        if k == "vod_play_url":
-            value = clean_field(value)
-        cleaned[k] = value
+        if k == "vod_name_letter":
+            # 根据影片名称生成拼音首字母
+            vod_name = v.get("vod_name", "")
+            cleaned[k] = get_chinese_first_letter(vod_name)
+        else:
+            value = v.get(k, "")
+            if k == "vod_play_url":
+                value = clean_field(value)
+            cleaned[k] = value
     return cleaned
 
 
