@@ -36,6 +36,33 @@ total_pages = 0
 # 数据库锁
 db_lock = Lock()
 
+def get_chinese_first_letter(text: str) -> str:
+    """
+    获取字符串中所有汉字拼音首字母，过滤非字母字符，只保留大写字母，最多50个字符
+    :param text: 输入混合文字
+    :return: 大写首字母拼接字符串（仅字母，最长50位）
+    """
+    if not text:
+        return ""
+    result = []
+    # 遍历每个字符单独转拼音取首字母
+    for char in text:
+        if '\u4e00' <= char <= '\u9fff':  # 判断是否汉字
+            pinyin_list = lazy_pinyin(char, style=Style.FIRST_LETTER)
+            if pinyin_list:
+                first_letter = pinyin_list[0].upper()
+                # 只保留字母
+                if first_letter.isalpha():
+                    result.append(first_letter)
+        else:
+            # 非汉字只保留英文字母并转大写，数字符号直接丢弃
+            if char.isalpha():
+                result.append(char.upper())
+        # 提前截断，避免多余遍历
+        if len(result) >= 50:
+            break
+    # 最多截取前50个大写字母返回
+    return ''.join(result[:50])
 # ===================== 重试请求 =====================
 def get_session():
     session = requests.Session()
