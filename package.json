@@ -1,8 +1,0 @@
-{
-  "name": "supabase-api",
-  "version": "1.0.0",
-  "dependencies": {
-    "express": "^4.19.2",
-    "node-fetch": "^2.7.0"
-  }
-}
