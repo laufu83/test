@@ -6,7 +6,7 @@ from concurrent.futures import ThreadPoolExecutor
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 from threading import Lock
-
+from pypinyin import lazy_pinyin, Style
 # ===================== 你只需要填这里 =====================
 DB_HOST = os.getenv("MYSQL_DB_HOST")
 DB_NAME = os.getenv("MYSQL_DB_NAME")
@@ -26,7 +26,8 @@ KEEP_FIELDS = [
     "vod_class", "vod_pic", "vod_actor", "vod_director",
     "vod_area", "vod_lang", "vod_year", "vod_douban_id",
     "vod_douban_score", "vod_content", "vod_remarks",
-    "vod_score", "vod_play_url", "vod_status", "vod_time"
+    "vod_score", "vod_play_url", "vod_status", "vod_time",
+    "vod_name_letter"  # 新增拼音首字母字段
 ]
 # 全局进度
 progress_lock = Lock()
@@ -39,7 +40,35 @@ cache_lock = Lock()
 
 # 数据库连接
 db_lock = Lock()
-conn = None
+conn = None  
+
+def get_chinese_first_letter(text: str) -> str:
+    """
+    获取字符串中所有汉字拼音首字母，过滤非字母字符，只保留大写字母，最多50个字符
+    :param text: 输入混合文字
+    :return: 大写首字母拼接字符串（仅字母，最长50位）
+    """
+    if not text:
+        return ""
+    result = []
+    # 遍历每个字符单独转拼音取首字母
+    for char in text:
+        if '\u4e00' <= char <= '\u9fff':  # 判断是否汉字
+            pinyin_list = lazy_pinyin(char, style=Style.FIRST_LETTER)
+            if pinyin_list:
+                first_letter = pinyin_list[0].upper()
+                # 只保留字母
+                if first_letter.isalpha():
+                    result.append(first_letter)
+        else:
+            # 非汉字只保留英文字母并转大写，数字符号直接丢弃
+            if char.isalpha():
+                result.append(char.upper())
+        # 提前截断，避免多余遍历
+        if len(result) >= 50:
+            break
+    # 最多截取前50个大写字母返回
+    return ''.join(result[:50])
 
 # ===================== 请求重试 =====================
 def get_session():
@@ -65,12 +94,16 @@ def clean_field(val):
 def clean_video_data(v):
     cleaned = {}
     for k in KEEP_FIELDS:
-        value = v.get(k)
-        if k == "vod_play_url":
-            value = clean_field(value)
-        cleaned[k] = value
+        if k == "vod_name_letter":
+            # 根据影片名称生成拼音首字母
+            vod_name = v.get("vod_name", "")
+            cleaned[k] = get_chinese_first_letter(vod_name)
+        else:
+            value = v.get(k, "")
+            if k == "vod_play_url":
+                value = clean_field(value)
+            cleaned[k] = value
     return cleaned
-
 
 # ===================== MySQL 连接 =====================
 def get_mysql_conn():
