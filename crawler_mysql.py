@@ -58,15 +58,14 @@ def get_chinese_first_letter(text: str) -> str:
             if pinyin_list:
                 first_letter = pinyin_list[0].upper()
                 # 只保留字母
-                 # 非汉字：保留英文字母(转大写) + 数字，其他符号丢弃
-                 if char.isalpha():
+                if char.isalpha():
                     result.append(char.upper())
-                 elif char.isdigit():
-                    result.append(char)
         else:
             # 非汉字只保留英文字母并转大写，数字符号直接丢弃
             if char.isalpha():
                 result.append(char.upper())
+            elif char.isdigit():
+                result.append(char)
         # 提前截断，避免多余遍历
         if len(result) >= 50:
             break
