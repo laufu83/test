@@ -13,7 +13,7 @@ DB_PORT = os.getenv("DB_PORT", "5432")
 DB_NAME = os.getenv("DB_NAME", "postgres")
 DB_USER = os.getenv("DB_USER")
 DB_PASS = os.getenv("DB_PASS")
-TABLE_NAME = "movies.vod"
+TABLE_NAME = "vod"
 MAX_THREAD = 5
 # ==========================================================
 API_BASE_URL = "https://dyttzy5.tv/api.php/provide/vod/from/dyttm3u8/at/json/"
