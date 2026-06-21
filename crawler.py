@@ -16,7 +16,7 @@ DB_PASS = os.getenv("DB_PASS")
 TABLE_NAME = "vod"
 MAX_THREAD = 5
 # ==========================================================
-API_BASE_URL = "https://dyttzy5.tv/api.php/provide/vod/from/dyttm3u8/at/json/"
+API_BASE_URL = "https://api.niuniuzy.me/api.php/provide/vod/from/nnm3u8/at/json"
 # ====================================================
 KEEP_FIELDS = [
     "vod_id", "type_id", "type_name", "type_id_1",
