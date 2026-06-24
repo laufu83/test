@@ -1,0 +1,23 @@
+name: Redis Cloud 定时保活
+run-name: Redis 实例活跃度保活任务
+
+# 每周一 北京时间上午9点执行（UTC 0点）
+on:
+  schedule:
+    - cron: '0 0/1 * * *'
+
+jobs:
+  redis_keep_alive:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 安装Redis客户端
+        run: sudo apt update && sudo apt install redis-tools -y
+
+      - name: 执行保活写入命令
+        env:
+          REDIS_HOST: ${{ vars.REDIS_HOST }}
+          REDIS_PORT: ${{ vars.REDIS_PORT }}
+          REDIS_PWD: ${{ secrets.REDIS_PASSWORD }}
+        run: |
+          redis-cli -h $REDIS_HOST -p $REDIS_PORT -a $REDIS_PWD --no-auth-warning SET redis_keepalive_ts $(date +%s)
+          echo "✅ Redis保活成功，已写入时间戳键值"
