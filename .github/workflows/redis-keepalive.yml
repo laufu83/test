@@ -1,10 +1,12 @@
 name: Redis Cloud 定时保活
 run-name: Redis 实例活跃度保活任务
 
-# 每周一 北京时间上午9点执行（UTC 0点）
+# 定时 + 手动双触发
 on:
   schedule:
     - cron: '0 0/1 * * *'
+  workflow_dispatch:  # 加上这一行，才会出现Run workflow按钮
+
 
 jobs:
   redis_keep_alive:
