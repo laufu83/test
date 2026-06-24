@@ -1,8 +1,8 @@
 name: 仓库定时保活防止Action冻结
 on:
   schedule:
-    # 每50天执行一次空提交
-    - cron: '0 0 1 */2 *'
+    - cron: '0 0 * * *'
+  workflow_dispatch:  # 新增手动触发
 
 jobs:
   keep_repo_active:
