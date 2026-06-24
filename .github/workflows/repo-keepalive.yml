@@ -1,0 +1,17 @@
+name: 仓库定时保活防止Action冻结
+on:
+  schedule:
+    # 每50天执行一次空提交
+    - cron: '0 0 1 */2 *'
+
+jobs:
+  keep_repo_active:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 生成空提交激活仓库
+        run: |
+          git config --global user.name "GitHub Action Bot"
+          git config --global user.email "action@github.com"
+          git commit --allow-empty -m "chore: repo keep alive auto commit"
+          git push
