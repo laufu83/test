@@ -6,6 +6,7 @@ permissions:
 on:
   schedule:
     - cron: '0 0 * * *'
+    workflow_dispatch:  # 加上这一行，才会出现Run workflow按钮
 
 jobs:
   keep-alive:
