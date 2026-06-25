@@ -1,17 +1,21 @@
-name: 仓库定时保活防止Action冻结
+name: Repo Keep Alive
+
+permissions:
+  contents: write
+
 on:
   schedule:
     - cron: '0 0 * * *'
-  workflow_dispatch:  # 新增手动触发
 
 jobs:
-  keep_repo_active:
+  keep-alive:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: 生成空提交激活仓库
+      - name: Auto Commit
         run: |
           git config --global user.name "GitHub Action Bot"
-          git config --global user.email "action@github.com"
-          git commit --allow-empty -m "chore: repo keep alive auto commit"
+          git config --global user.email "actions@github.com"
+          git add .
+          git commit -m "chore: repo keep alive auto commit" --allow-empty
           git push
