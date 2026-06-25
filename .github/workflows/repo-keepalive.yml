@@ -1,22 +1,30 @@
-name: Repo Keep Alive
+name: Repo Keep Alive Auto Commit
 
-permissions:
-  contents: write
-
+# 触发条件：定时 + 手动点击触发
 on:
   schedule:
+    # 每天 UTC 0 点执行（可自行修改 cron）
     - cron: '0 0 * * *'
-    workflow_dispatch:  # 加上这一行，才会出现Run workflow按钮
+  workflow_dispatch: # 开启手动触发按钮
+
+# 关键：授予仓库写入权限，解决 403 报错
+permissions:
+  contents: write
 
 jobs:
   keep-alive:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Auto Commit
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure git user
         run: |
           git config --global user.name "GitHub Action Bot"
           git config --global user.email "actions@github.com"
+
+      - name: Empty commit & push
+        run: |
           git add .
           git commit -m "chore: repo keep alive auto commit" --allow-empty
           git push
