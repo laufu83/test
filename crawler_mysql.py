@@ -18,7 +18,7 @@ TABLE_NAME =  os.getenv("BASE_TABLE")          # 表名（你之前建的表）
 MAX_THREAD = 20       # 并发线程数
 BATCH_SIZE = 100  # 每100条提交一次（大幅降请求）
 
-API_BASE_URL = os.getenv("API_BASE_URL")
+API_BASE_URL = os.getenv("BASE_URL")
 
 KEEP_FIELDS = [
     "vod_id", "type_id", "type_name", "type_id_1",
