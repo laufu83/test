@@ -18,7 +18,7 @@ TABLE_NAME =  os.getenv("BASE_TABLE")          # 表名（你之前建的表）
 MAX_THREAD = 20       # 并发线程数
 BATCH_SIZE = 100  # 每100条提交一次（大幅降请求）
 
-API_BASE_URL = os.getenv("BASE_URL")
+API_BASE_URL = os.getenv("API_BASE_URL")
 
 KEEP_FIELDS = [
     "vod_id", "type_id", "type_name", "type_id_1",
@@ -182,16 +182,10 @@ def get_total_pages():
     except:
         return 1
 
-def get_ids_by_page(page):
-    try:
-        data = get_session().get(f"{API_BASE_URL}?pg={page}", timeout=15).json()
-        return [str(x["vod_id"]) for x in data.get("list", []) if x.get("vod_id")]
-    except:
-        return []
 
-def get_video_details(ids):
+def get_video_details(page):
     try:
-        url = f"{API_BASE_URL}?ac=detail&ids={','.join(ids)}"
+        url = f"{API_BASE_URL}?ac=detail&h=24&pg={page}"
         return get_session().get(url, timeout=20).json().get("list", [])
     except:
         return []
@@ -201,8 +195,7 @@ def task(page):
     global completed
     try:
         time.sleep(1.2)
-        ids = get_ids_by_page(page)
-        details = get_video_details(ids)
+        details = get_video_details(page)
         add_to_cache(details)
     finally:
         with progress_lock:
