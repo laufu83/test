@@ -154,18 +154,9 @@ def get_total_pages():
     except:
         return 1
 
-def get_ids_by_page(page):
+def get_video_details(page):   
     try:
-        resp = get_session().get(f"{API_BASE_URL}?pg={page}", timeout=15)
-        return [str(item["vod_id"]) for item in resp.json().get("list", []) if item.get("vod_id")]
-    except:
-        return []
-
-def get_video_details(ids):
-    if not ids:
-        return []
-    try:
-        url = f"{API_BASE_URL}?ac=detail&ids={','.join(ids)}"
+        url = f"{API_BASE_URL}?ac=detail&h=24&pg={page}"
         return get_session().get(url, timeout=20).json().get("list", [])
     except:
         return []
@@ -174,9 +165,8 @@ def get_video_details(ids):
 def task(page):
     global completed
     try:
-        time.sleep(1.3)
-        ids = get_ids_by_page(page)
-        details = get_video_details(ids)
+        time.sleep(1.3)     
+        details = get_video_details(page)
         save_single_page(details)
     finally:
         with progress_lock:
